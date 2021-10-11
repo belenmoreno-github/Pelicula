@@ -35,7 +35,7 @@ const indexView = (peliculas) => {
     };
 
     view += `<div class="actions">
-                <button class="create" data-my-id="${i}">añadir</button>
+                <button class="create" data-my-id="${i}">crear</button>
                 <button class="reset" data-my-id="${i}">reset</button>
             </div>`;
 
@@ -92,24 +92,25 @@ const showView = (pelicula) => {
 
 const newView = () => {
 
-    // Opción "Añadir" que crea un apartado para una nueva película elegida por el usuario
+    // Opción "Crear" que crea un apartado para una nueva película elegida por el usuario
     
     return `<h2>Crear Película</h2>
+        <h3>Introducir nueva película: </h3>
         <div class="field">
         Título <br>
-        <input  type="text" id="titulo" placeholder="Título" 
+        <input  type="text" id="titulo" placeholder="Título">
         </div>
         <div class="field">
         Director <br>
-        <input  type="text" id="director" placeholder="Director" 
+        <input  type="text" id="director" placeholder="Director" >
         </div>
         <div class="field">
         Miniatura <br>
-        <input  type="text" id="miniatura" placeholder="URL de la miniatura" 
+        <input  type="text" id="miniatura" placeholder="URL de la miniatura"> 
         </div>
         
         <div class="actions">
-            <button class="index">añadir</button>
+            <button class="create">crear</button>
             <button class="index">Volver</button>
         </div>`;
 }
@@ -125,7 +126,6 @@ const indexContr = () => {
 
 const showContr = (i) => {
     // Completar: controlador que muestra la vista showView(pelicula)
-    // ...
     let pelicula = JSON.parse(localStorage.mis_peliculas)[i];
     document.getElementById('main').innerHTML = showView(pelicula);
 
@@ -138,9 +138,14 @@ const newContr = () => {
 
 const createContr = () => {
     // Completar: controlador que crea una película nueva en el modelo guardado en localStorage
+    //let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
+    mis_peliculas.push(document.getElementById('main').value);
+    indexContr();
+    //let mis_pelicula = JSON.parse(localStorage.mis_peliculas);
+    //document.getElementById('main').innerHTML = newView(mis_pelicula);
+
     
-    let mis_pelicula = JSON.parse(localStorage.mis_peliculas);
-    document.getElementById('main').innerHTML = newView(mis_pelicula);
+
 };
 
 const editContr = (i) => {
@@ -160,6 +165,8 @@ const updateContr = (i) => {
 const deleteContr = (i) => {
     // Completar:  controlador que actualiza el modelo borrando la película seleccionada
     // Genera diálogo de confirmación: botón Aceptar devuelve true, Cancel false
+    mis_peliculas.splice(i,1);
+    indexContr();
 };
 
 const resetContr = () => {
@@ -175,13 +182,16 @@ const myId = (ev) => Number(ev.target.dataset.myId);
 
 document.addEventListener('click', ev => {
     if      (matchEvent(ev, '.index'))  indexContr  ();
-    else if (matchEvent(ev, '.show'))  showContr (myId(ev));
-    else if (matchEvent(ev, '.create')) createContr (myId(ev));
     else if (matchEvent(ev, '.edit'))   editContr   (myId(ev));
+    else if (matchEvent(ev, '.show'))  showContr (myId(ev));
+    else if (matchEvent(ev, '.create')) newContr (myId(ev));
+    else if (matchEvent(ev, '.create')) createContr (myId(ev));
     else if (matchEvent(ev, '.update')) updateContr (myId(ev));
+    else if (matchEvent(ev, '.delete')) deleteContr (myId(ev));
     
     // Completar añadiendo los controladores que faltan
 })
+
 
 
 // Inicialización        
