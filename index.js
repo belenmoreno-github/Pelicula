@@ -35,7 +35,7 @@ const indexView = (peliculas) => {
     };
 
     view += `<div class="actions">
-                <button class="create" data-my-id="${i}">crear</button>
+                <button class="new" data-my-id="${i}">añadir</button>
                 <button class="reset" data-my-id="${i}">reset</button>
             </div>`;
 
@@ -96,17 +96,22 @@ const newView = () => {
     
     return `<h2>Crear Película</h2>
         <h3>Introducir nueva película: </h3>
+
         <div class="field">
         Título <br>
-        <input  type="text" id="titulo" placeholder="Título">
+        <input  type="text" id="titulo" placeholder="Título"
+        value="">
         </div>
         <div class="field">
         Director <br>
-        <input  type="text" id="director" placeholder="Director" >
+        <input  type="text" id="director" placeholder="Director" 
+        value="">
         </div>
         <div class="field">
         Miniatura <br>
-        <input  type="text" id="miniatura" placeholder="URL de la miniatura"> 
+        <input  type="text" id="miniatura" placeholder="URL de la miniatura"
+        value=""> 
+    
         </div>
         
         <div class="actions">
@@ -133,20 +138,23 @@ const showContr = (i) => {
 
 const newContr = () => {
     // Completar: controlador que muestra la vista newView()
-    document.getElementById('main').innerHTML = newView();
+    let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
+    document.getElementById('main').innerHTML = newView(mis_peliculas);
 };
 
 const createContr = () => {
     // Completar: controlador que crea una película nueva en el modelo guardado en localStorage
-    //let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
-    mis_peliculas.push(document.getElementById('main').value);
+    let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
+    var pelicula_nueva = {
+        titulo: document.getElementById('titulo').value,
+        director: document.getElementById('director').value,
+        "miniatura": document.getElementById('miniatura').value};
+    mis_peliculas.push(pelicula_nueva);
+    localStorage.mis_peliculas = JSON.stringify(mis_peliculas);
     indexContr();
-    //let mis_pelicula = JSON.parse(localStorage.mis_peliculas);
-    //document.getElementById('main').innerHTML = newView(mis_pelicula);
-
-    
-
 };
+    
+    
 
 const editContr = (i) => {
     let pelicula = JSON.parse(localStorage.mis_peliculas)[i];
@@ -183,10 +191,10 @@ const myId = (ev) => Number(ev.target.dataset.myId);
 document.addEventListener('click', ev => {
     if      (matchEvent(ev, '.index'))  indexContr  ();
     else if (matchEvent(ev, '.edit'))   editContr   (myId(ev));
-    else if (matchEvent(ev, '.show'))  showContr (myId(ev));
-    else if (matchEvent(ev, '.create')) newContr (myId(ev));
-    else if (matchEvent(ev, '.create')) createContr (myId(ev));
     else if (matchEvent(ev, '.update')) updateContr (myId(ev));
+    else if (matchEvent(ev, '.show'))  showContr (myId(ev));
+    else if (matchEvent(ev, '.new')) newContr (myId(ev));
+    else if (matchEvent(ev, '.create')) createContr (myId(ev));
     else if (matchEvent(ev, '.delete')) deleteContr (myId(ev));
     
     // Completar añadiendo los controladores que faltan
