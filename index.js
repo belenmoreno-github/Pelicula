@@ -173,13 +173,22 @@ const updateContr = (i) => {
 const deleteContr = (i) => {
     // Completar:  controlador que actualiza el modelo borrando la película seleccionada
     // Genera diálogo de confirmación: botón Aceptar devuelve true, Cancel false
-    mis_peliculas.splice(i,1);
-    indexContr();
+    let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
+    var confirmacion = confirm("Se eliminará la película elegida, ¿Está seguro de que quiere eliminarla?")
+    if (confirmacion == true) {
+        mis_peliculas.splice(i,1);
+        localStorage.mis_peliculas = JSON.stringify(mis_peliculas);
+        indexContr();
+    } else {
+        indexContr();
+    }
+      
 };
 
 const resetContr = () => {
     // Completar:  controlador que reinicia el modelo guardado en localStorage con las películas originales
-    
+    localStorage.mis_peliculas = JSON.stringify(mis_peliculas_iniciales);
+    indexContr();
 };
 
 
@@ -196,12 +205,11 @@ document.addEventListener('click', ev => {
     else if (matchEvent(ev, '.new')) newContr (myId(ev));
     else if (matchEvent(ev, '.create')) createContr (myId(ev));
     else if (matchEvent(ev, '.delete')) deleteContr (myId(ev));
-    
-    // Completar añadiendo los controladores que faltan
+    else if (matchEvent(ev, '.reset')) resetContr (myId(ev));
+ 
 })
 
 
 
 // Inicialización        
 document.addEventListener('DOMContentLoaded', indexContr);
-
