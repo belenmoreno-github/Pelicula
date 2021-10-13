@@ -12,6 +12,8 @@ localStorage.mis_peliculas = localStorage.mis_peliculas || JSON.stringify(mis_pe
 
 // VISTAS
 
+// index
+
 const indexView = (peliculas) => {
     let i=0;
     let view = "";
@@ -42,7 +44,7 @@ const indexView = (peliculas) => {
     return view;
 };
 
-
+// edit
 const editView = (i, pelicula) => {
 
     return `<h2>Editar Película </h2>
@@ -71,10 +73,10 @@ const editView = (i, pelicula) => {
         `;
 }
 
-
+// show
 const showView = (pelicula) => {
 
-    //Opción "Ver" que muestra información de la película seleccionada
+    //Opción "Ver" que muestra información de la película seleccionada.
     
     return `
     <div class="field">
@@ -90,6 +92,7 @@ const showView = (pelicula) => {
         </div>`;
 }
 
+// new
 const newView = () => {
 
     // Opción "Crear" que crea un apartado para una nueva película elegida por el usuario
@@ -124,26 +127,30 @@ const newView = () => {
 
 // CONTROLADORES 
 
+//Index
 const indexContr = () => {
     let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
     document.getElementById('main').innerHTML = indexView(mis_peliculas);
 };
 
+//Mostrar
 const showContr = (i) => {
-    // Completar: controlador que muestra la vista showView(pelicula)
+    // Controlador que muestra la vista showView(pelicula)
     let pelicula = JSON.parse(localStorage.mis_peliculas)[i];
     document.getElementById('main').innerHTML = showView(pelicula);
 
 };
 
+//New ("Añadir")
 const newContr = () => {
-    // Completar: controlador que muestra la vista newView()
+    // Controlador que muestra la vista newView()
     let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
     document.getElementById('main').innerHTML = newView(mis_peliculas);
 };
 
+//Crear
 const createContr = () => {
-    // Completar: controlador que crea una película nueva en el modelo guardado en localStorage
+    // Controlador que crea una película nueva en el modelo guardado en localStorage
     let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
     var pelicula_nueva = {
         titulo: document.getElementById('titulo').value,
@@ -155,12 +162,13 @@ const createContr = () => {
 };
     
     
-
+//Editar
 const editContr = (i) => {
     let pelicula = JSON.parse(localStorage.mis_peliculas)[i];
     document.getElementById('main').innerHTML = editView(i, pelicula);
 };
 
+//Actualizar
 const updateContr = (i) => {
     let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
     mis_peliculas[i].titulo    = document.getElementById('titulo').value;
@@ -170,8 +178,9 @@ const updateContr = (i) => {
     indexContr();
 };
 
+//Eliminar
 const deleteContr = (i) => {
-    // Completar:  controlador que actualiza el modelo borrando la película seleccionada
+    // Controlador que actualiza el modelo borrando la película seleccionada
     // Genera diálogo de confirmación: botón Aceptar devuelve true, Cancel false
     let mis_peliculas = JSON.parse(localStorage.mis_peliculas);
     var confirmacion = confirm("Se eliminará la película elegida, ¿Está seguro de que quiere eliminarla?")
@@ -185,11 +194,13 @@ const deleteContr = (i) => {
       
 };
 
+//Resetear
 const resetContr = () => {
-    // Completar:  controlador que reinicia el modelo guardado en localStorage con las películas originales
+    // Controlador que reinicia el modelo guardado en localStorage con las películas originales
     localStorage.mis_peliculas = JSON.stringify(mis_peliculas_iniciales);
     indexContr();
 };
+
 
 
 // ROUTER de eventos
